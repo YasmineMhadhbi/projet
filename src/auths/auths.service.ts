@@ -20,8 +20,8 @@ export class AuthsService {
   ) {}
 
   async signUp(data: User):Promise<any>{
-    const userExists = await this.usersService.getUserByEmail(data.email);
-    if (userExists) {
+    //const userExists = await this.usersService.getUserByEmail(data.email);
+    if (await this.usersService.getUserByEmail(data.email)) {
       throw new BadRequestException('User already exists!');
     } else {
       const newUser = await this.usersService.createUser(data);
@@ -33,7 +33,7 @@ export class AuthsService {
 
   async signin(data: Auth) {
     const user = await this.usersService.getUserByEmail(data.email);
-   if (user.password== data.password)
+   if (user.password!= data.password)
      throw new BadRequestException('Password is incorrect !');
     const tokens = await this.getTokens(user.id, user.email);
     await this.updateRefreshToken(user.id,tokens.refreshToken);

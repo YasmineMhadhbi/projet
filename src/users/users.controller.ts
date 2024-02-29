@@ -20,7 +20,7 @@ export class UsersController {
   )
   create(@Body() createUserDto: User ,@UploadedFile() file): User {
     createUserDto.photo=file.filename;
- 
+      
     return this.usersService.createUser(createUserDto);
   }
   @Get()
